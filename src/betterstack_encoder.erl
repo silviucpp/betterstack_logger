@@ -18,9 +18,6 @@ encode({Event, EventExtraFields}, Hostname, ExtraFields, Formatter) ->
     Extra = maps:to_list(maps:merge(maps:from_list(ExtraFields), maps:from_list(EventExtraFields))),
     encode(Event, Hostname, lists:keymerge(1, EventExtraFields, Extra), Formatter).
 
-merge_proplists(P1, P2) -> .
-
-
 % internals
 
 format_message(Event, {FormatterModule, FormatterConfig}) ->
