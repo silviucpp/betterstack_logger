@@ -4,19 +4,24 @@
     encode/4
 ]).
 
-% no_formatter and hostname inside event are related to some internal apps.
+% no_formatter and hostname and extra_fields inside event are related to some internal functionality.
 
-encode(#{level := Level, meta := Meta} = Event, Hostname, ExtraFields, Formatter) ->
+encode(#{level := Level, meta := Meta} = Event, Hostname, ExtraFields0, Formatter) ->
+
+    ExtraFields = case maps:get(extra_fields, Event, null) of
+        null ->
+            ExtraFields0;
+        EventExtraMap ->
+            maps:to_list(maps:merge(maps:from_list(ExtraFields0), EventExtraMap))
+    end,
+
     betterstack_utils:safe_json_encode([
         {<<"dt">>, erlang:trunc(maps:get(time, Meta)/1000)},
         {<<"level">>, severity2bin(Level)},
         {<<"severity">>, severity2int(Level)},
         {<<"host">>, maps:get(hostname, Event, Hostname)},
         {<<"message">>, format_message(Event, Formatter)} | ExtraFields
-    ]);
-encode({Event, EventExtraFields}, Hostname, ExtraFields, Formatter) ->
-    Extra = maps:to_list(maps:merge(maps:from_list(ExtraFields), maps:from_list(EventExtraFields))),
-    encode(Event, Hostname, lists:keymerge(1, EventExtraFields, Extra), Formatter).
+    ]).
 
 % internals
 
