@@ -1,0 +1,37 @@
+[
+    {betterstack_logger, [
+        {logger,
+            [
+                {handler, betterstack_logs, betterstack_logger, #{
+                    level => info,
+                    config => #{
+                        http_pool_options => [
+                            {timeout, 15000},
+                            {max_connections, 10}
+                        ],
+
+                        betterstack_source_token => <<"SOURCE_TOKEN_HERE">>,
+                        extra_fields => [
+                          {<<"_env">>, <<"production">>}
+                        ],
+                        upload_batch_max_size => 50,
+                        upload_batch_inteval_ms => 5000,
+                        upload_failed_retry_count => 3,
+                        upload_failed_retry_delay_ms => 1000
+                    },
+                    formatter => {
+                        logger_formatter, #{
+                            single_line => true,
+                            template => [pid, " ", mfa,":",line, " => ", msg],
+                            time_offset => "Z"
+                        }
+                    },
+                    filters => [
+                        %{remote_group_leader, {fun logger_filters:remote_gl/2, stop}},
+                        %{progress, {fun logger_filters:progress/2, stop}},
+                        %{sasl, {fun logger_filters:domain/2, {stop, sub, [otp, sasl]}}}
+                    ]
+                }}
+            ]}
+    ]}
+].
