@@ -1,6 +1,6 @@
 # betterstack_logger
 
-[![Build Status](https://travis-ci.com/silviucpp/betterstack_logger.svg?branch=main)](https://travis-ci.com/github/silviucpp/betterstack_logger)
+[![Build Status](https://app.travis-ci.com/silviucpp/betterstack_logger.svg?branch=main)](https://travis-ci.com/github/silviucpp/betterstack_logger)
 [![GitHub](https://img.shields.io/github/license/silviucpp/betterstack_logger)](https://github.com/silviucpp/betterstack_logger/blob/main/LICENSE)
 [![Hex.pm](https://img.shields.io/hexpm/v/betterstack_logger)](https://hex.pm/packages/betterstack_logger)
 
