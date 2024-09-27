@@ -1,6 +1,6 @@
 {application, betterstack_logger, [
     {description, "OTP logger backend that sends log events to BetterStack Logs."},
-    {vsn, "1.0.0"},
+    {vsn, "1.0.2"},
     {licenses, ["MIT"]},
     {links,[{"Github","https://github.com/silviucpp/betterstack_logger"}]},
     {registered, []},
