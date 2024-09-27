@@ -169,8 +169,7 @@ http_request(Url, Method, PayloadJson, AuthHeaders, Retries, IntervalMs) ->
     end.
 
 get_hostname() ->
-    {ok, Host} = inet:gethostname(),
-    betterstack_utils:to_binary(Host).
+    betterstack_utils:to_binary(string:trim(os:cmd("hostname -f"))).
 
 wait_for_childrens(Pid, Timeout) ->
     {links, LinkedProcesses} = process_info(Pid, links),
