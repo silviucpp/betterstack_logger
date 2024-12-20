@@ -157,6 +157,9 @@ http_request(Url, Method, PayloadJson, AuthHeaders, Retries, IntervalMs) ->
             202 ->
                 %?PRINT_MSG(<<"### Log sent response: ~p payload: ~p ~n">>, [Response, PayloadJson]),
                 ok;
+            402 ->
+                % in case your plan is over the limit. Do not spam logs
+                ok;
             _ ->
                 ?PRINT_MSG("~p:http_request url: ~p failed status: ~p payload: ~p retries: ~p ~n", [?MODULE, Url, StatusCode, PayloadJson, Retries]),
                 timer:sleep(IntervalMs),
