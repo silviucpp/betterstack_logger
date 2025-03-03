@@ -10,6 +10,7 @@
                             {max_connections, 10}
                         ],
 
+                        betterstack_host => <<"HOST_HERE">>,
                         betterstack_source_token => <<"SOURCE_TOKEN_HERE">>,
                         extra_fields => [
                           {<<"_env">>, <<"production">>}

@@ -17,7 +17,7 @@
 ]).
 
 -define(HACKNEY_POOL, betterstack_pool).
--define(BETTERSTACK_URL, <<"https://in.logs.betterstack.com">>).
+-define(DEFAULT_BETTERSTACK_URL, <<"https://in.logs.betterstack.com">>).
 
 -record(state, {
     hostname,
@@ -25,6 +25,7 @@
 
     extra_fields,
     bt_headers,
+    bt_url,
 
     upload_batch_max_size,
     upload_batch_inteval_ms,
@@ -108,6 +109,7 @@ do_push_messages(#state {
     upload_failed_retry_count = RetryCount,
     upload_failed_retry_delay_ms = RetryDelayMs,
     bt_headers = AuthHeaders,
+    bt_url = BetterStackUrl,
     flush_timer = FlushTimerRef,
     formatter = Formatter,
     hostname = Hostname,
@@ -124,7 +126,7 @@ do_push_messages(#state {
 
     spawn_link(fun() ->
         Payload = merge_json_payload(lists:map(fun(M) -> betterstack_encoder:encode(M, Hostname, ExtraFields, Formatter) end, Messages)),
-        http_request(?BETTERSTACK_URL, post, Payload, AuthHeaders, RetryCount, RetryDelayMs)
+        http_request(BetterStackUrl, post, Payload, AuthHeaders, RetryCount, RetryDelayMs)
     end),
 
     State#state{messages = [], msg_count = 0, flush_timer = undefined}.
@@ -205,6 +207,7 @@ update_config(Config, Formatter, State) ->
 
     State#state {
         formatter = Formatter,
+        bt_url = maps:get(betterstack_host, Config, ?DEFAULT_BETTERSTACK_URL),
         bt_headers = get_headers(maps:get(betterstack_source_token, Config)),
         extra_fields = maps:get(extra_fields, Config, []),
         upload_batch_max_size = maps:get(upload_batch_max_size, Config, 50),

@@ -28,6 +28,7 @@ add the logger handler settings to your `sys.config`
                         {max_connections, 10}
                     ],
 
+                    betterstack_host => <<"HOST_HERE">>,
                     betterstack_source_token => <<"SOURCE_TOKEN_HERE">>,
                     extra_fields => [
                       {<<"_env">>, <<"prod">>}
@@ -68,8 +69,9 @@ because `sys.config` is applied at `kernel` application start time and `betterst
 | Property               | Mandatory | Description                                                                                                                                                                                          |
 | --------------------- |:---------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | http_pool_options      |           | [hackney][3] pool config.                                                                                                                                                                            |
+|betterstack_host|     Y     | BetterStack Ingesting host.                                                                                                                                                                                    |
 |betterstack_source_token|     Y     | BetterStack Source Token used for authentication.                                                                                                                                                    |
-|extra_fields|           | Extra fields to be added to the message event.|                                                                                                                                                       |
+|extra_fields|           | Extra fields to be added to the message event.                                                                                                                                                       |                                                                                                                                                       |
 | upload_batch_max_size |           | *Default: 50*. The events are sent in batches. A batch is sent when is reaching the `upload_batch_max_size` size or a number of `upload_batch_inteval_ms` ms elapsed.                                |
 | upload_batch_inteval_ms|           | *Default: 5000*. Number of milliseconds we can wait for events to accumulate. A batch is sent when is reaching the `upload_batch_max_size` size or a number of `upload_batch_inteval_ms` ms elapsed. |
 | upload_failed_retry_count |           | *Default: 3*. In case a batch sending operation failed, how many times we retry to resubmit.                                                                                                         |
